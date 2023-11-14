@@ -16,24 +16,23 @@ void prog3();
 
 int main()
 {
-	setlocale(LC_ALL, "RU");
-
 	int task = 0;
 	std::cout << "Какую задачу вы хотите решить(1, 2, 3)?: ";
 	std::cin >> task;
 
 	switch (task)
 	{
-	case 1:
-		prog1();
-		break;
-	case 2:
-		prog2();
-		break;
-	case 3:
-		prog3();
-	default:
-		break;
+        case 1:
+            prog1();
+            break;
+        case 2:
+            prog2();
+            break;
+        case 3:
+            prog3();
+            break;
+        default:
+            break;
 	}
 }
 
