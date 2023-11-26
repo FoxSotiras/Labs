@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 
-const double Pi = 3.1416;
+const double Pi = std::numbers::pi;
 const double min = 0;
 const double max = 3 * Pi;
 const double step = 0.1;
@@ -32,6 +32,7 @@ int main()
             prog3();
             break;
         default:
+            std::cout << "Введите числа от 1 до 3." << std::endl;
             break;
 	}
 }

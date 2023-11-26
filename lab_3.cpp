@@ -1,93 +1,91 @@
 #include <iostream>
-#include <cstdlib>
-#include <random>
-#include "dynamic_array.h"
+#include "dynamic_array.h" //my dynamic array in C++
+using std::cout;
+using std::cin;
+using std::endl;
 
 void Prog1();
-void GetNumbers(DynamicArray* array);
-void GetRandomNumbers(DynamicArray* array);
-bool IsEven(int number);
-int GetMinNumber(DynamicArray* array);
+void GetNumbers(mylib::dynamic_array<short>& array);
+bool IsEven(short num);
+short GetMinNumber(mylib::dynamic_array<short>& array);
 
 int main()
 {
-    int task = 0;
-	std::cout << "Какую задачу вы хотите решить(1, 2, 3, 4)?: ";
-	std::cin >> task;
+    unsigned short task = 0;
+    cout << "Какую задачу вы хотите решить?" << endl;
+    cout << "  1. Найти минимальное число среди чисел массива." << endl;
+    cout << "  2." << endl;
+    cout << "  3." << endl;
+    cout << "  4." << endl;
+    cout << "Ваш выбор: ";
+    cin >> task;
 
-	switch (task)
-	{
+    switch (task)
+    {
         case 1:
             Prog1();
             break;
-        // case 2:
-        //     Prog2();
-        //     break;
-        // case 3:
-        //     Prog3();
-        //     break; 
-        // case 4:
-        //     Prog4();
-        //     break;
         default:
+            cout << "Выбери номер задачи, малолетний дебил!" << endl;
             break;
-	}
+    }
+
+    return 0;
 }
 
 void Prog1()
 {
-    DynamicArray* numbers = new DynamicArray();
-    
-    int method = 0;
-    std::cout << "Выберите способо ввода чисел(1 - самостоятельно, 2 - рандом): ";
-    std::cin >> method;
+    mylib::dynamic_array<short> nums;
+    GetNumbers(nums);
 
+    short min_num = GetMinNumber(nums);
+    cout << "Минимальное чётное число в массиве: " << min_num << endl;
+}
+
+void GetNumbers(mylib::dynamic_array<short>& array)
+{
+    unsigned short len = 0, method = 0;
+    cout << "Введите желаемое количество чисел для обработки: ";
+    cin >> len;
+    if (len <= 0)
+    {
+        cout << "Длина - это натуральное число, подучи матан";
+        return;
+    }
+    
+    cout << "Как вы хотите ввести числа?" << endl;
+    cout << "  1. Самостоятельно." << endl << "  2. C помощью рандома (лень всему голова)." << endl;
+    cout << "Ваш выбор: ";
+    cin >> method;
+
+    short num = 0;
     switch (method)
     {
         case 1:
-            GetNumbers(numbers);
+            for (int i = 0; i < len; ++i)
+            {
+                cout << "Введите число: ";
+                cin >> num;
+                array.push_back(num);
+            }
+
             break;
         case 2:
-            GetRandomNumbers(numbers);
+            for (unsigned short i = 0; i < len; ++i)
+            {
+                array.push_back(rand() % 10000);
+            }
+
             break;
         default:
+            cout << "Ты дурак?" << endl;
             break;
     }
-
-    int min = GetMinNumber(numbers);
-    std::cout << "Минимальное число последовательности = " << min << std::endl;
-    delete numbers; 
 }
 
-void GetNumbers(DynamicArray* array)
+bool IsEven(short num)
 {
-    int len = 0, num = 0;
-    std::cout << "Введите количество обрабатываемых чисел: ";
-    std::cin >> len;
-
-    for (int i = 0; i < len; ++i)
-    {
-        std::cout << "Введите число: ";
-        std::cin >> num;
-        array->push_back(num);
-    }
-}
-
-void GetRandomNumbers(DynamicArray* array)
-{
-    int len = 0, num = 0;
-    std::cout << "Введите количество обрабатываемых чисел: ";
-    std::cin >> len;
-
-    for (int i = 0; i < len; ++i)
-    {
-        array->push_back(rand() % 10000);
-    }
-}
-
-bool IsEven(int number)
-{
-    if (number % 2 == 0)
+    if (num % 2 == 0)
     {
         return true;
     }
@@ -97,14 +95,14 @@ bool IsEven(int number)
     }
 }
 
-int GetMinNumber(DynamicArray* array)
+short GetMinNumber(mylib::dynamic_array<short>& array)
 {
-    int min = 10000;
-    int number = 0;
+    short min = 10000;
+    short number = 0;
 
-    for (int i = 0; i < array->last_item_index; ++i)
+    for (unsigned short i = 0; i < array.size(); ++i)
     {
-        number = (*array)[i];
+        number = array[i];
 
         if (number < min && IsEven(number))
         {

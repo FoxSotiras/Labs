@@ -1,14 +1,13 @@
-#include <iostream>
 #include <cmath>
-#include "dynamic_array.h"
+#include "int_dynamic_array.h"
 
 void Prog1();
 void Prog2();
-void GetNumbers(DynamicArray* array);
-void PrintNumbers(DynamicArray* array);
-DynamicArray* GetPrimeNumbers(DynamicArray* input_array);
-DynamicArray* GetSpecialNumbers(DynamicArray* input_array);
-int GetMaxNumber(DynamicArray* array);
+void GetNumbers(IntDynamicArray* array);
+void PrintNumbers(IntDynamicArray* array);
+IntDynamicArray* GetPrimeNumbers(IntDynamicArray* input_array);
+IntDynamicArray* GetSpecialNumbers(IntDynamicArray* input_array);
+int GetMaxNumber(IntDynamicArray* array);
 int GetFirstDigit(int num);
 int GetLastDigit(int num);
 bool HaveZero(int num);
@@ -28,7 +27,7 @@ int main()
             Prog2();
             break;
         default:
-            std::cout << "Введите числа от 1 до 2" << std::endl;
+            std::cout << "Введите числа от 1 до 2." << std::endl;
             break;
     }
     
@@ -37,10 +36,10 @@ int main()
 
 void Prog1()
 {
-    DynamicArray* numbers = new DynamicArray();
+    IntDynamicArray* numbers = new IntDynamicArray();
     GetNumbers(numbers);
 
-    DynamicArray* prime_numbers = new DynamicArray();
+    IntDynamicArray* prime_numbers = new IntDynamicArray();
     prime_numbers = GetPrimeNumbers(numbers);
     delete numbers;
 
@@ -52,10 +51,10 @@ void Prog1()
 
 void Prog2()
 {
-    DynamicArray* numbers = new DynamicArray();
+    IntDynamicArray* numbers = new IntDynamicArray();
     GetNumbers(numbers);
 
-    DynamicArray* special_numbers = new DynamicArray();
+    IntDynamicArray* special_numbers = new IntDynamicArray();
     special_numbers = GetSpecialNumbers(numbers);
     delete numbers;
 
@@ -64,7 +63,7 @@ void Prog2()
     delete special_numbers;
 }
 
-void GetNumbers(DynamicArray* array)
+void GetNumbers(IntDynamicArray* array)
 {
     int len = 0, num = 0;
     std::cout << "Введите количество обрабатываемых чисел: ";
@@ -78,7 +77,7 @@ void GetNumbers(DynamicArray* array)
     }
 }
 
-void PrintNumbers(DynamicArray* array)
+void PrintNumbers(IntDynamicArray* array)
 {
     for (int i = 0; i < array->last_item_index; ++i)
     {
@@ -87,10 +86,10 @@ void PrintNumbers(DynamicArray* array)
     std::cout << std::endl;
 }
 
-DynamicArray* GetPrimeNumbers(DynamicArray* input_array)
+IntDynamicArray* GetPrimeNumbers(IntDynamicArray* input_array)
 {
     int cnt = 0, num = 0;
-    DynamicArray* output_array = new DynamicArray();
+    IntDynamicArray* output_array = new IntDynamicArray();
 
     for (int i = 0; i < input_array->last_item_index; ++i)
     {
@@ -114,10 +113,10 @@ DynamicArray* GetPrimeNumbers(DynamicArray* input_array)
     return output_array;
 }
 
-DynamicArray* GetSpecialNumbers(DynamicArray* input_array)
+IntDynamicArray* GetSpecialNumbers(IntDynamicArray* input_array)
 {
     int num = 0;
-    DynamicArray* output_array = new DynamicArray();
+    IntDynamicArray* output_array = new IntDynamicArray();
 
     for (int i = 0; i < input_array->last_item_index; ++i)
     {
@@ -132,7 +131,7 @@ DynamicArray* GetSpecialNumbers(DynamicArray* input_array)
     return output_array;
 }
 
-int GetMaxNumber(DynamicArray* array)
+int GetMaxNumber(IntDynamicArray* array)
 {
     int max = 0, num = 0;
 
