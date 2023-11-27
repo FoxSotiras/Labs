@@ -1,10 +1,16 @@
 #include <iostream>
-#include "dynamic_array.h" //my dynamic array in C++
+#include <algorithm>
+#include <cstring>
+#include <string>
+#include "dynamic_array.h" //my dynamic array in C++, watch https://github.com/FoxSotiras/MyLib-CPP for details
 using std::cout;
 using std::cin;
 using std::endl;
+using std::sort;
+using std::memcpy;
 
 void Prog1();
+void Prog2();
 void GetNumbers(mylib::dynamic_array<short>& array);
 bool IsEven(short num);
 short GetMinNumber(mylib::dynamic_array<short>& array);
@@ -14,7 +20,7 @@ int main()
     unsigned short task = 0;
     cout << "Какую задачу вы хотите решить?" << endl;
     cout << "  1. Найти минимальное число среди чисел массива." << endl;
-    cout << "  2." << endl;
+    cout << "  2. Ввод строки и её сортировка." << endl;
     cout << "  3." << endl;
     cout << "  4." << endl;
     cout << "Ваш выбор: ";
@@ -24,6 +30,9 @@ int main()
     {
         case 1:
             Prog1();
+            break;
+        case 2:
+            Prog2();
             break;
         default:
             cout << "Выбери номер задачи, малолетний дебил!" << endl;
@@ -40,6 +49,48 @@ void Prog1()
 
     short min_num = GetMinNumber(nums);
     cout << "Минимальное чётное число в массиве: " << min_num << endl;
+}
+
+void Prog2()
+{   
+    const unsigned short string_len = 512;
+
+    char string[string_len * 3];
+    cout << "Введите строку: ";
+    cin >> string;
+
+    char numbers[string_len], symbols[string_len], punctuation[string_len];
+    unsigned short i = 0, numbers_cnt = 0, symbols_cnt = 0, punctuation_cnt = 0;
+    while(string[i] != '\0')
+    {
+        if (string[i] >= 48 && string[i] <= 57)
+        {
+            numbers[numbers_cnt++] = string[i];
+        }
+        else if (string[i] == '!' || string[i] == '"' || string[i] == '\'' || string[i] == '?'
+        || string[i] == '.' || string[i] == ',' || string[i] == '-' || string[i] == ':' || string[i] == ';'
+        || string[i] == '[' || string[i] == ']' || string[i] == '(' || string[i] == ')')
+        {
+            punctuation[punctuation_cnt++] = string[i];
+        }
+        else
+        {
+            symbols[symbols_cnt++] = string[i];
+        }
+
+        ++i;
+    }
+
+    sort(numbers, numbers + numbers_cnt);
+    sort(symbols, symbols + symbols_cnt);
+    sort(punctuation, punctuation + punctuation_cnt);
+
+    char output[string_len];
+    memcpy(output, numbers, sizeof(char) * numbers_cnt);
+    memcpy(output + numbers_cnt, symbols, sizeof(char) * symbols_cnt);
+    memcpy(output + numbers_cnt + symbols_cnt, punctuation, sizeof(char) * punctuation_cnt);
+
+    cout << output;
 }
 
 void GetNumbers(mylib::dynamic_array<short>& array)
