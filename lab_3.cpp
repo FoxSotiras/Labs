@@ -2,15 +2,19 @@
 #include <algorithm>
 #include <cstring>
 #include <string>
+#include <limits>
 #include "dynamic_array.h" //my dynamic array in C++, watch https://github.com/FoxSotiras/MyLib-CPP for details
 using std::cout;
 using std::cin;
 using std::endl;
 using std::sort;
 using std::memcpy;
+using std::numeric_limits;
+using std::streamsize;
 
 void Prog1();
 void Prog2();
+void Prog3();
 void GetNumbers(mylib::dynamic_array<short>& array);
 bool IsEven(short num);
 short GetMinNumber(mylib::dynamic_array<short>& array);
@@ -21,7 +25,7 @@ int main()
     cout << "Какую задачу вы хотите решить?" << endl;
     cout << "  1. Найти минимальное число среди чисел массива." << endl;
     cout << "  2. Ввод строки и её сортировка." << endl;
-    cout << "  3." << endl;
+    cout << "  3. " << endl;
     cout << "  4." << endl;
     cout << "Ваш выбор: ";
     cin >> task;
@@ -33,6 +37,9 @@ int main()
             break;
         case 2:
             Prog2();
+            break;
+        case 3:
+            Prog3();
             break;
         default:
             cout << "Выбери номер задачи, малолетний дебил!" << endl;
@@ -52,12 +59,13 @@ void Prog1()
 }
 
 void Prog2()
-{   
+{
     const unsigned short string_len = 512;
 
-    char string[string_len * 3];
+    char string[string_len];
     cout << "Введите строку: ";
-    cin >> string;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.getline(string, string_len);
 
     char numbers[string_len], symbols[string_len], punctuation[string_len];
     unsigned short i = 0, numbers_cnt = 0, symbols_cnt = 0, punctuation_cnt = 0;
@@ -73,7 +81,7 @@ void Prog2()
         {
             punctuation[punctuation_cnt++] = string[i];
         }
-        else
+        else if (string[i] > 32)
         {
             symbols[symbols_cnt++] = string[i];
         }
@@ -90,7 +98,12 @@ void Prog2()
     memcpy(output + numbers_cnt, symbols, sizeof(char) * symbols_cnt);
     memcpy(output + numbers_cnt + symbols_cnt, punctuation, sizeof(char) * punctuation_cnt);
 
-    cout << output;
+    cout << "Отсортированная строка: " << output << endl;
+}
+
+void Prog3()
+{
+
 }
 
 void GetNumbers(mylib::dynamic_array<short>& array)
@@ -100,8 +113,8 @@ void GetNumbers(mylib::dynamic_array<short>& array)
     cin >> len;
     if (len <= 0)
     {
-        cout << "Длина - это натуральное число, подучи матан";
-        return;
+        cout << "Длина - это натуральное число, подучи матан." << endl;
+        exit(0);
     }
     
     cout << "Как вы хотите ввести числа?" << endl;
