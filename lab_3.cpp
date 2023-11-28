@@ -4,39 +4,28 @@
 #include <string>
 #include <limits>
 #include "dynamic_array.h" //my dynamic array in C++, watch https://github.com/FoxSotiras/MyLib-CPP for details
-using std::cout;
-using std::cin;
-using std::endl;
-using std::sort;
-using std::memcpy;
-using std::numeric_limits;
-using std::streamsize;
-using std::string;
-using std::getline;
-using std::stol;
-using std::to_string;
 
 void Prog1();
 void Prog2();
 void Prog3();
 void GetNumbers(mylib::dynamic_array<short>& array);
-void GetString(string& string);
+void GetString(std::string& string);
 bool IsEven(short num);
-void RemoveSymbols(string& input);
+void RemoveSymbols(std::string& input);
 short GetMinNumber(mylib::dynamic_array<short>& array);
-mylib::dynamic_array<string> SplitString(string input, string delimiter = " ");
-void Convert10ToBaseK(mylib::dynamic_array<string>& array);
+mylib::dynamic_array<std::string> SplitString(std::string input, std::string delimiter = " ");
+void Convert10ToBaseK(mylib::dynamic_array<std::string>& array);
 
 int main()
 {
     unsigned short task = 0;
-    cout << "Какую задачу вы хотите решить?" << endl;
-    cout << "  1. Найти минимальное число среди чисел массива." << endl;
-    cout << "  2. Ввод строки и её сортировка." << endl;
-    cout << "  3. Преобразование чисел из 10 в 2-16 системы." << endl;
-    cout << "  4." << endl;
-    cout << "Ваш выбор: ";
-    cin >> task;
+    std::cout << "Какую задачу вы хотите решить?" << std::endl;
+    std::cout << "  1. Найти минимальное число среди чисел массива." << std::endl;
+    std::cout << "  2. Ввод строки и её сортировка." << std::endl;
+    std::cout << "  3. Преобразование чисел из 10 в 2-16 системы." << std::endl;
+    std::cout << "  4." << std::endl;
+    std::cout << "Ваш выбор: ";
+    std::cin >> task;
 
     switch (task)
     {
@@ -50,7 +39,7 @@ int main()
             Prog3();
             break;
         default:
-            cout << "Выбери номер задачи, малолетний дебил!" << endl;
+            std::cout << "Выбери номер задачи, малолетний дебил!" << std::endl;
             break;
     }
 
@@ -63,7 +52,7 @@ void Prog1()
     GetNumbers(nums);
 
     short min_num = GetMinNumber(nums);
-    cout << "Минимальное чётное число в массиве: " << min_num << endl;
+    std::cout << "Минимальное чётное число в массиве: " << min_num << std::endl;
 }
 
 void Prog2()
@@ -71,9 +60,9 @@ void Prog2()
     const unsigned short input_len = 512;
 
     char input[input_len];
-    cout << "Введите строку: ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.getline(input, input_len);
+    std::cout << "Введите строку: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.getline(input, input_len);
 
     char numbers[input_len], symbols[input_len], punctuation[input_len];
     unsigned short i = 0, numbers_cnt = 0, symbols_cnt = 0, punctuation_cnt = 0;
@@ -97,30 +86,30 @@ void Prog2()
         ++i;
     }
 
-    sort(numbers, numbers + numbers_cnt);
-    sort(symbols, symbols + symbols_cnt);
-    sort(punctuation, punctuation + punctuation_cnt);
+    std::sort(numbers, numbers + numbers_cnt);
+    std::sort(symbols, symbols + symbols_cnt);
+    std::sort(punctuation, punctuation + punctuation_cnt);
 
     char output[input_len];
-    memcpy(output, numbers, sizeof(char) * numbers_cnt);
-    memcpy(output + numbers_cnt, symbols, sizeof(char) * symbols_cnt);
-    memcpy(output + numbers_cnt + symbols_cnt, punctuation, sizeof(char) * punctuation_cnt);
+    std::memcpy(output, numbers, sizeof(char) * numbers_cnt);
+    std::memcpy(output + numbers_cnt, symbols, sizeof(char) * symbols_cnt);
+    std::memcpy(output + numbers_cnt + symbols_cnt, punctuation, sizeof(char) * punctuation_cnt);
 
-    cout << "Отсортированная строка: " << output << endl;
+    std::cout << "Отсортированная строка: " << output << std::endl;
 }
 
 void Prog3()
 {
-    string input;
+    std::string input;
     GetString(input);
 
-    mylib::dynamic_array<string> string_array = SplitString(input);
+    mylib::dynamic_array<std::string> string_array = SplitString(input);
     
     unsigned short flag = 0;
-    cout << "Желаете перевести полученные числа в систему с другим основанием?" << endl;
-    cout << "  1. Да" << endl << "  2. Нет" << endl;
-    cout << "Ваш выбор: ";
-    cin >> flag;
+    std::cout << "Желаете перевести полученные числа в систему с другим основанием?" << std::endl;
+    std::cout << "  1. Да" << std::endl << "  2. Нет" << std::endl;
+    std::cout << "Ваш выбор: ";
+    std::cin >> flag;
     switch (flag)
     {
         case 1:
@@ -129,33 +118,33 @@ void Prog3()
         case 2:
             break;
         default:
-            cout << "Ну попросили же 1 или 2..." << endl;
+            std::cout << "Ну попросили же 1 или 2..." << std::endl;
             break;
     }
 
-    cout << "Итоговые числа: ";
+    std::cout << "Итоговые числа: ";
     for (unsigned int i = 0; i < string_array.size(); ++i)
     {
-        cout << string_array[i] << ' ';
+        std::cout << string_array[i] << ' ';
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 void GetNumbers(mylib::dynamic_array<short>& array)
 {
     unsigned short len = 0, method = 0;
-    cout << "Введите желаемое количество чисел для обработки: ";
-    cin >> len;
+    std::cout << "Введите желаемое количество чисел для обработки: ";
+    std::cin >> len;
     if (len <= 0)
     {
-        cout << "Длина - это натуральное число, подучи матан." << endl;
+        std::cout << "Длина - это натуральное число, подучи матан." << std::endl;
         exit(0);
     }
     
-    cout << "Как вы хотите ввести числа?" << endl;
-    cout << "  1. Самостоятельно." << endl << "  2. C помощью рандома (лень всему голова)." << endl;
-    cout << "Ваш выбор: ";
-    cin >> method;
+    std::cout << "Как вы хотите ввести числа?" << std::endl;
+    std::cout << "  1. Самостоятельно." << std::endl << "  2. C помощью рандома (лень всему голова)." << std::endl;
+    std::cout << "Ваш выбор: ";
+    std::cin >> method;
 
     short num = 0;
     switch (method)
@@ -163,8 +152,8 @@ void GetNumbers(mylib::dynamic_array<short>& array)
         case 1:
             for (unsigned short i = 0; i < len; ++i)
             {
-                cout << "Введите число: ";
-                cin >> num;
+                std::cout << "Введите число: ";
+                std::cin >> num;
                 array.push_back(num);
             }
 
@@ -177,16 +166,16 @@ void GetNumbers(mylib::dynamic_array<short>& array)
 
             break;
         default:
-            cout << "Ты дурак?" << endl;
+            std::cout << "Ты дурак?" << std::endl;
             break;
     }
 }
 
-void GetString(string& string)
+void GetString(std::string& string)
 {
-    cout << "Введите строку чисел: ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin, string);
+    std::cout << "Введите строку чисел: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, string);
 }
 
 bool IsEven(short num)
@@ -201,7 +190,7 @@ bool IsEven(short num)
     }
 }
 
-void RemoveSymbols(string& input)
+void RemoveSymbols(std::string& input)
 {
     int len = input.size();
     for (unsigned long long i = 0, j = 0; i < len; ++i, ++j)
@@ -231,17 +220,16 @@ short GetMinNumber(mylib::dynamic_array<short>& array)
     return min;
 }
 
-mylib::dynamic_array<string> SplitString(string input, string delimiter)
+mylib::dynamic_array<std::string> SplitString(std::string input, std::string delimiter)
 {
-    mylib::dynamic_array<string> array;
-    string temp;
+    mylib::dynamic_array<std::string> array;
+    std::string temp;
 
-    while (input.find(delimiter) != string::npos)
+    while (input.find(delimiter) != std::string::npos)
     {
         temp = input.substr(0, input.find(delimiter));
 
         RemoveSymbols(temp);
-
         if (temp != "")
         {
             array.push_back(temp);
@@ -259,18 +247,18 @@ mylib::dynamic_array<string> SplitString(string input, string delimiter)
     return array;
 }
 
-void Convert10ToBaseK(mylib::dynamic_array<string>& array)
+void Convert10ToBaseK(mylib::dynamic_array<std::string>& array)
 {
     unsigned short k = 0;
-    cout << "Какое основание для системы хотите выбрать?" << endl << "Ваш выбор: ";
-    cin >> k;
+    std::cout << "Какое основание для системы хотите выбрать?" << std::endl << "Ваш выбор: ";
+    std::cin >> k;
 
     long long num = 0;
     mylib::dynamic_array<unsigned short> digits;
-    string temp;
+    std::string temp;
     for (unsigned int i = 0; i < array.size(); ++i)
     {
-        num = stol(array[0]);
+        num = std::stol(array[0]);
 
         if (num < 0)
         {
