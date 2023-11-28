@@ -22,6 +22,7 @@ void Prog3();
 void GetNumbers(mylib::dynamic_array<short>& array);
 void GetString(string& string);
 bool IsEven(short num);
+void RemoveSymbols(string& input);
 short GetMinNumber(mylib::dynamic_array<short>& array);
 mylib::dynamic_array<string> SplitString(string input, string delimiter = " ");
 void Convert10ToBaseK(mylib::dynamic_array<string>& array);
@@ -160,7 +161,7 @@ void GetNumbers(mylib::dynamic_array<short>& array)
     switch (method)
     {
         case 1:
-            for (int i = 0; i < len; ++i)
+            for (unsigned short i = 0; i < len; ++i)
             {
                 cout << "Введите число: ";
                 cin >> num;
@@ -200,6 +201,18 @@ bool IsEven(short num)
     }
 }
 
+void RemoveSymbols(string& input)
+{
+    int len = input.size();
+    for (unsigned long long i = 0, j = 0; i < len; ++i, ++j)
+    {
+        if (input[j] < 48 || input[j] > 57)
+        {
+            input.erase(j--, 1);
+        }
+    }
+}
+
 short GetMinNumber(mylib::dynamic_array<short>& array)
 {
     short min = 10000;
@@ -226,10 +239,22 @@ mylib::dynamic_array<string> SplitString(string input, string delimiter)
     while (input.find(delimiter) != string::npos)
     {
         temp = input.substr(0, input.find(delimiter));
-        array.push_back(temp);
+
+        RemoveSymbols(temp);
+
+        if (temp != "")
+        {
+            array.push_back(temp);
+        }
+
         input.erase(0, input.find(delimiter) + 1);
     }
-    array.push_back(input);
+
+    RemoveSymbols(input);
+    if (input != "")
+    {
+        array.push_back(input);
+    }
 
     return array;
 }
@@ -281,7 +306,7 @@ void Convert10ToBaseK(mylib::dynamic_array<string>& array)
         }
 
         array.push_back(temp);
-        array.erase(0);
+        array.erase(0, 1);
         digits.clear();
         temp.clear();
     }
