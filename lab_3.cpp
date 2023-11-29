@@ -1,4 +1,5 @@
 #include <iostream>
+#include <random>
 #include <algorithm>
 #include <cstring>
 #include <string>
@@ -8,11 +9,14 @@
 void Prog1();
 void Prog2();
 void Prog3();
-void GetNumbers(mylib::dynamic_array<short>& array);
+void Prog4();
+void GetNumbers(mylib::dynamic_array<int>& array);
+void UserInput(mylib::dynamic_array<int>& array, unsigned short len);
+void RandInput(mylib::dynamic_array<int>& array, unsigned short len);
 void GetString(std::string& string);
-bool IsEven(short num);
+bool IsEven(int num);
 void RemoveSymbols(std::string& input);
-short GetMinNumber(mylib::dynamic_array<short>& array);
+short GetMinNumber(mylib::dynamic_array<int>& array);
 mylib::dynamic_array<std::string> SplitString(std::string input, std::string delimiter = " ");
 void Convert10ToBaseK(mylib::dynamic_array<std::string>& array);
 
@@ -23,7 +27,7 @@ int main()
     std::cout << "  1. Найти минимальное число среди чисел массива." << std::endl;
     std::cout << "  2. Ввод строки и её сортировка." << std::endl;
     std::cout << "  3. Преобразование чисел из 10 в 2-16 системы." << std::endl;
-    std::cout << "  4." << std::endl;
+    std::cout << "  4. Операции над одномерным целочисленным массивом." << std::endl;
     std::cout << "Ваш выбор: ";
     std::cin >> task;
 
@@ -38,6 +42,9 @@ int main()
         case 3:
             Prog3();
             break;
+        case 4:
+            Prog4();
+            break;
         default:
             std::cout << "Выбери номер задачи, малолетний дебил!" << std::endl;
             break;
@@ -48,7 +55,7 @@ int main()
 
 void Prog1()
 {
-    mylib::dynamic_array<short> nums;
+    mylib::dynamic_array<int> nums;
     GetNumbers(nums);
 
     short min_num = GetMinNumber(nums);
@@ -123,14 +130,20 @@ void Prog3()
     }
 
     std::cout << "Итоговые числа: ";
-    for (unsigned int i = 0; i < string_array.size(); ++i)
+    for (unsigned long long i = 0; i < string_array.size(); ++i)
     {
         std::cout << string_array[i] << ' ';
     }
     std::cout << std::endl;
 }
 
-void GetNumbers(mylib::dynamic_array<short>& array)
+void Prog4()
+{
+    mylib::dynamic_array<int> nums;
+    GetNumbers(nums);
+}
+
+void GetNumbers(mylib::dynamic_array<int>& array)
 {
     unsigned short len = 0, method = 0;
     std::cout << "Введите желаемое количество чисел для обработки: ";
@@ -146,28 +159,40 @@ void GetNumbers(mylib::dynamic_array<short>& array)
     std::cout << "Ваш выбор: ";
     std::cin >> method;
 
-    short num = 0;
     switch (method)
     {
         case 1:
-            for (unsigned short i = 0; i < len; ++i)
-            {
-                std::cout << "Введите число: ";
-                std::cin >> num;
-                array.push_back(num);
-            }
-
+            UserInput(array, len);
             break;
         case 2:
-            for (unsigned short i = 0; i < len; ++i)
-            {
-                array.push_back(rand() % 10000);
-            }
-
+            RandInput(array, len);
             break;
         default:
             std::cout << "Ты дурак?" << std::endl;
             break;
+    }
+}
+
+void UserInput(mylib::dynamic_array<int>& array, unsigned short len)
+{
+    int num = 0;
+
+    for (unsigned short i = 0; i < len; ++i)
+    {
+        std::cout << "Введите число: ";
+        std::cin >> num;
+        array.push_back(num);
+    }
+}
+
+void RandInput(mylib::dynamic_array<int>& array, unsigned short len)
+{
+    std::random_device rd;
+    std::uniform_int_distribution<int> dist(0, 10000);
+
+    for (unsigned short i = 0; i < len; ++i)
+    {
+        array.push_back(dist(rd));
     }
 }
 
@@ -178,7 +203,7 @@ void GetString(std::string& string)
     std::getline(std::cin, string);
 }
 
-bool IsEven(short num)
+bool IsEven(int num)
 {
     if (num % 2 == 0)
     {
@@ -202,10 +227,10 @@ void RemoveSymbols(std::string& input)
     }
 }
 
-short GetMinNumber(mylib::dynamic_array<short>& array)
+short GetMinNumber(mylib::dynamic_array<int>& array)
 {
-    short min = 10000;
-    short number = 0;
+    int min = 10000;
+    int number = 0;
 
     for (unsigned short i = 0; i < array.size(); ++i)
     {
@@ -256,7 +281,7 @@ void Convert10ToBaseK(mylib::dynamic_array<std::string>& array)
     long long num = 0;
     mylib::dynamic_array<unsigned short> digits;
     std::string temp;
-    for (unsigned int i = 0; i < array.size(); ++i)
+    for (unsigned long long i = 0; i < array.size(); ++i)
     {
         num = std::stol(array[0]);
 
@@ -271,7 +296,7 @@ void Convert10ToBaseK(mylib::dynamic_array<std::string>& array)
             num /= k;
         }
 
-        for (unsigned int j = 0; j < digits.size(); ++j) {
+        for (unsigned long long j = 0; j < digits.size(); ++j) {
             switch (digits[j])
             {
                 case 0: temp += '0'; break;
