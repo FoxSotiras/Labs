@@ -10,15 +10,22 @@ void Prog1();
 void Prog2();
 void Prog3();
 void Prog4();
+void UserInput(mylib::dynamic_array<int>& array, unsigned long long len);
+void RandInput(mylib::dynamic_array<int>& array, unsigned long long len);
 void GetNumbers(mylib::dynamic_array<int>& array);
-void UserInput(mylib::dynamic_array<int>& array, unsigned short len);
-void RandInput(mylib::dynamic_array<int>& array, unsigned short len);
 void GetString(std::string& string);
 bool IsEven(int num);
+bool ThreeOnesInBinary(int num);
+bool IsPrime(int num);
 void RemoveSymbols(std::string& input);
-short GetMinNumber(mylib::dynamic_array<int>& array);
+int GetMinNumber(mylib::dynamic_array<int>& array);
+int GetMaxNumber(mylib::dynamic_array<int>& array);
+int GetMinEvenNumber(mylib::dynamic_array<int>& array);
 mylib::dynamic_array<std::string> SplitString(std::string input, std::string delimiter = " ");
 void Convert10ToBaseK(mylib::dynamic_array<std::string>& array);
+double GetArithmeticMean(mylib::dynamic_array<int>& array);
+mylib::dynamic_array<int> GetNumbersByBinary(mylib::dynamic_array<int>& input);
+void ErasePrimeNumbers(mylib::dynamic_array<int>& array);
 
 int main()
 {
@@ -58,7 +65,7 @@ void Prog1()
     mylib::dynamic_array<int> nums;
     GetNumbers(nums);
 
-    short min_num = GetMinNumber(nums);
+    int min_num = GetMinEvenNumber(nums);
     std::cout << "Минимальное чётное число в массиве: " << min_num << std::endl;
 }
 
@@ -72,8 +79,8 @@ void Prog2()
     std::cin.getline(input, input_len);
 
     char numbers[input_len], symbols[input_len], punctuation[input_len];
-    unsigned short i = 0, numbers_cnt = 0, symbols_cnt = 0, punctuation_cnt = 0;
-    while(input[i] != '\0')
+    unsigned short numbers_cnt = 0, symbols_cnt = 0, punctuation_cnt = 0;
+    for(unsigned short i = 0; input[i] != '\0'; ++i)
     {
         if (input[i] >= 48 && input[i] <= 57)
         {
@@ -89,8 +96,6 @@ void Prog2()
         {
             symbols[symbols_cnt++] = input[i];
         }
-
-        ++i;
     }
 
     std::sort(numbers, numbers + numbers_cnt);
@@ -139,13 +144,62 @@ void Prog3()
 
 void Prog4()
 {
-    mylib::dynamic_array<int> nums;
-    GetNumbers(nums);
+    mylib::dynamic_array<int> array_A;
+    GetNumbers(array_A);
+    std::cout << "Изначальный массив A: ";
+    for (int i = 0; i < array_A.size(); ++i)
+    {
+        std::cout << array_A[i] << ' ';
+    }
+    std::cout << std::endl;
+
+    int arithmetic_mean = GetArithmeticMean(array_A);
+    std::cout << "1. Среднее арифметическое чисел между наибольшим и наименьшим элементами: " << arithmetic_mean << std::endl;
+
+    mylib::dynamic_array<int> array_B = GetNumbersByBinary(array_A);
+    std::cout << "2. Сформированный массив B из массива A: ";
+    for (int i = 0; i < array_B.size(); ++i)
+    {
+        std::cout << array_B[i] << ' ';
+    }
+    std::cout << std::endl;
+
+    ErasePrimeNumbers(array_A);
+    std::cout << "4. Удаление простых чисел из массива A: ";
+    for (int i = 0; i < array_A.size(); ++i)
+    {
+        std::cout << array_A[i] << ' ';
+    }
+    std::cout << std::endl;
+}
+
+void UserInput(mylib::dynamic_array<int>& array, unsigned long long len)
+{
+    int num = 0;
+
+    for (unsigned long long i = 0; i < len; ++i)
+    {
+        std::cout << "Введите число: ";
+        std::cin >> num;
+        array.push_back(num);
+    }
+}
+
+void RandInput(mylib::dynamic_array<int>& array, unsigned long long len)
+{
+    std::random_device rd;
+    std::uniform_int_distribution<int> dist(0, 10000);
+
+    for (unsigned long long i = 0; i < len; ++i)
+    {
+        array.push_back(dist(rd));
+    }
 }
 
 void GetNumbers(mylib::dynamic_array<int>& array)
 {
-    unsigned short len = 0, method = 0;
+    unsigned long long len = 0;
+    unsigned short method = 0;
     std::cout << "Введите желаемое количество чисел для обработки: ";
     std::cin >> len;
     if (len <= 0)
@@ -173,29 +227,6 @@ void GetNumbers(mylib::dynamic_array<int>& array)
     }
 }
 
-void UserInput(mylib::dynamic_array<int>& array, unsigned short len)
-{
-    int num = 0;
-
-    for (unsigned short i = 0; i < len; ++i)
-    {
-        std::cout << "Введите число: ";
-        std::cin >> num;
-        array.push_back(num);
-    }
-}
-
-void RandInput(mylib::dynamic_array<int>& array, unsigned short len)
-{
-    std::random_device rd;
-    std::uniform_int_distribution<int> dist(0, 10000);
-
-    for (unsigned short i = 0; i < len; ++i)
-    {
-        array.push_back(dist(rd));
-    }
-}
-
 void GetString(std::string& string)
 {
     std::cout << "Введите строку чисел: ";
@@ -206,6 +237,48 @@ void GetString(std::string& string)
 bool IsEven(int num)
 {
     if (num % 2 == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool ThreeOnesInBinary(int num)
+{
+    int cnt = 0;
+
+    while (num != 0)
+    {
+        num = num & (num - 1);
+        ++cnt;
+    }
+
+    if (cnt > 3)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool IsPrime(int num)
+{
+    int cnt = 0;
+
+    for (int j = 1; j <= sqrt(num); ++j)
+    {
+        if (num % j == 0)
+        {
+            cnt += 2;
+        }
+    }
+
+    if (cnt == 2 && num != 1)
     {
         return true;
     }
@@ -227,18 +300,52 @@ void RemoveSymbols(std::string& input)
     }
 }
 
-short GetMinNumber(mylib::dynamic_array<int>& array)
+int GetMinNumber(mylib::dynamic_array<int>& array)
 {
-    int min = 10000;
-    int number = 0;
+    int num = 0, min = 10000;
 
     for (unsigned short i = 0; i < array.size(); ++i)
     {
-        number = array[i];
+        num = array[i];
 
-        if (number < min && IsEven(number))
+        if (num < min)
         {
-            min = number;
+            min = num;
+        }
+    }
+
+    return min;
+}
+
+int GetMaxNumber(mylib::dynamic_array<int>& array)
+{
+    int num = 0, max = -10000;
+
+    for (unsigned short i = 0; i < array.size(); ++i)
+    {
+        num = array[i];
+
+        if (num > max)
+        {
+            max = num;
+        }
+    }
+
+    return max;
+}
+
+int GetMinEvenNumber(mylib::dynamic_array<int>& array)
+{
+    int min = 10000;
+    int num = 0;
+
+    for (unsigned short i = 0; i < array.size(); ++i)
+    {
+        num = array[i];
+
+        if (num < min && IsEven(num))
+        {
+            min = num;
         }
     }
 
@@ -283,7 +390,7 @@ void Convert10ToBaseK(mylib::dynamic_array<std::string>& array)
     std::string temp;
     for (unsigned long long i = 0; i < array.size(); ++i)
     {
-        num = std::stol(array[0]);
+        num = std::stoll(array[0]);
 
         if (num < 0)
         {
@@ -296,7 +403,8 @@ void Convert10ToBaseK(mylib::dynamic_array<std::string>& array)
             num /= k;
         }
 
-        for (unsigned long long j = 0; j < digits.size(); ++j) {
+        for (unsigned long long j = 0; j < digits.size(); ++j)
+        {
             switch (digits[j])
             {
                 case 0: temp += '0'; break;
@@ -322,5 +430,71 @@ void Convert10ToBaseK(mylib::dynamic_array<std::string>& array)
         array.erase(0, 1);
         digits.clear();
         temp.clear();
+    }
+}
+
+double GetArithmeticMean(mylib::dynamic_array<int>& array)
+{
+    int cnt = 0, min = 0, max = 0;
+    double sum = 0;
+    min = GetMinNumber(array);
+    max = GetMaxNumber(array);
+
+    unsigned long long min_index = 0, max_index = 0;
+    for (unsigned long long i = 0; i < array.size(); ++i)
+    {
+        if (array[i] == min)
+        {
+            min_index = i;
+        }
+        if (array[i] == max)
+        {
+            max_index = i;
+        }
+    }
+
+    if (min_index > max_index)
+    {
+        while (max_index != min_index)
+        {
+            sum += array[max_index++];
+            ++cnt;
+        }
+    }
+    else
+    {
+        while (min_index != max_index)
+        {
+            sum += array[min_index++];
+            ++cnt;
+        }
+    }
+
+    return sum / cnt;
+}
+
+mylib::dynamic_array<int> GetNumbersByBinary(mylib::dynamic_array<int>& input)
+{
+    mylib::dynamic_array<int> output;
+
+    for (unsigned long long i = 0; i < input.size(); ++i)
+    {
+        if (ThreeOnesInBinary(input[i]))
+        {
+            output.push_back(input[i]);
+        }
+    }
+
+    return output;
+}
+
+void ErasePrimeNumbers(mylib::dynamic_array<int>& array)
+{
+    for (unsigned long long i = 0; i < array.size(); ++i)
+    {
+        if (IsPrime(array[i]))
+        {
+            array.erase(i, 1);
+        }
     }
 }
