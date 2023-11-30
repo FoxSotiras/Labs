@@ -24,6 +24,7 @@ int GetMinEvenNumber(mylib::dynamic_array<int>& array);
 mylib::dynamic_array<std::string> SplitString(std::string input, std::string delimiter = " ");
 void Convert10ToBaseK(mylib::dynamic_array<std::string>& array);
 double GetArithmeticMean(mylib::dynamic_array<int>& array);
+void SortArray(mylib::dynamic_array<int>& array);
 mylib::dynamic_array<int> GetNumbersByBinary(mylib::dynamic_array<int>& input);
 void ErasePrimeNumbers(mylib::dynamic_array<int>& array);
 
@@ -158,15 +159,23 @@ void Prog4()
 
     mylib::dynamic_array<int> array_B = GetNumbersByBinary(array_A);
     std::cout << "2. Сформированный массив B из массива A: ";
-    for (int i = 0; i < array_B.size(); ++i)
+    for (unsigned long long i = 0; i < array_B.size(); ++i)
     {
         std::cout << array_B[i] << ' ';
     }
     std::cout << std::endl;
 
+    SortArray(array_A);
+    std::cout << "3. Сортировка массива A: ";
+    for (unsigned long long i = 0; i < array_A.size(); ++i)
+    {
+        std::cout << array_A[i] << ' ';
+    }
+    std::cout << std::endl;
+
     ErasePrimeNumbers(array_A);
     std::cout << "4. Удаление простых чисел из массива A: ";
-    for (int i = 0; i < array_A.size(); ++i)
+    for (unsigned long long i = 0; i < array_A.size(); ++i)
     {
         std::cout << array_A[i] << ' ';
     }
@@ -455,7 +464,7 @@ double GetArithmeticMean(mylib::dynamic_array<int>& array)
 
     if (min_index > max_index)
     {
-        while (max_index != min_index)
+        while (max_index <= min_index)
         {
             sum += array[max_index++];
             ++cnt;
@@ -463,7 +472,7 @@ double GetArithmeticMean(mylib::dynamic_array<int>& array)
     }
     else
     {
-        while (min_index != max_index)
+        while (min_index <= max_index)
         {
             sum += array[min_index++];
             ++cnt;
@@ -471,6 +480,28 @@ double GetArithmeticMean(mylib::dynamic_array<int>& array)
     }
 
     return sum / cnt;
+}
+
+void SortArray(mylib::dynamic_array<int>& array)
+{
+    for(unsigned long long i = 0; i < array.size(); ++i)
+    {
+        int a = array[i];
+        if (array[i] > 0)
+        {
+            array.insert(0, array[i]);
+            array.erase(i + 1, 1);
+        }
+    }
+    for(unsigned long long i = 0; i < array.size(); ++i)
+    {
+        int a = array[i];
+        if (array[i] < 0)
+        {
+            array.insert(0, array[i]);
+            array.erase(i + 1, 1);
+        }
+    }
 }
 
 mylib::dynamic_array<int> GetNumbersByBinary(mylib::dynamic_array<int>& input)
