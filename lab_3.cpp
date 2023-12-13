@@ -486,7 +486,6 @@ void SortArray(mylib::dynamic_array<int>& array)
 {
     for(unsigned long long i = 0; i < array.size(); ++i)
     {
-        int a = array[i];
         if (array[i] > 0)
         {
             array.insert(0, array[i]);
@@ -495,7 +494,6 @@ void SortArray(mylib::dynamic_array<int>& array)
     }
     for(unsigned long long i = 0; i < array.size(); ++i)
     {
-        int a = array[i];
         if (array[i] < 0)
         {
             array.insert(0, array[i]);
